@@ -35,7 +35,7 @@
             cursor: none;
         }
 
-        /* Custom Cursor */
+        /* Custom Cursor - Desktop Only */
         .cursor {
             position: fixed;
             width: 20px;
@@ -47,6 +47,7 @@
             transition: transform 0.1s ease, border-color 0.3s ease, box-shadow 0.3s ease;
             backdrop-filter: blur(10px);
             box-shadow: 0 0 10px rgba(0, 212, 255, 0.3), inset 0 0 10px rgba(0, 212, 255, 0.1);
+            display: none;
         }
 
         .cursor-follower {
@@ -60,6 +61,22 @@
             transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
             border: 1px solid rgba(0, 212, 255, 0.3);
             box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+            display: none;
+        }
+
+        /* Show custom cursor on desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .cursor {
+                display: block;
+            }
+
+            .cursor-follower {
+                display: block;
+            }
+
+            body {
+                cursor: none;
+            }
         }
 
         /* Loading Screen */
