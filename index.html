@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carl Ariel Igong-igong - IT Student & Software Developer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-glass: rgba(255, 255, 255, 0.05);
+            --text-primary: #ffffff;
+            --text-secondary: #b8bcc5;
+            --accent-cyan: #00d4ff;
+            --accent-purple: #7c3aed;
+            --accent-blue: #3b82f6;
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 35px 60px -12px rgba(0, 0, 0, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent-cyan);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10001;
+            transition: transform 0.1s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3), inset 0 0 10px rgba(0, 212, 255, 0.1);
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 212, 255, 0.2);
+            border-top: 3px solid var(--accent-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Navigation */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: none;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(0, 212, 255, 0.1) 0%, 
+                rgba(124, 58, 237, 0.1) 50%, 
+                rgba(59, 130, 246, 0.1) 100%);
+            animation: gradientShift 8s ease infinite;
+            z-index: 1;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
+            50% { transform: translateX(-30%) translateY(-30%) rotate(180deg); }
+        }
+
+        @keyframes gradientBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3), inset 0 0 20px rgba(0, 212, 255, 0.05); }
+            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.5), inset 0 0 20px rgba(0, 212, 255, 0.1); }
+        }
+
+        @keyframes float-up {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            width: 100%;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-text .title {
+            color: var(--accent-purple);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hero-text p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: white;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3), var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.5), var(--shadow-hover);
+        }
+
+        .btn-primary:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(124, 58, 237, 0.2));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: 50px;
+        }
+
+        .btn-secondary:hover::before {
+            opacity: 1;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.25);
+            border-color: rgba(0, 212, 255, 0.4);
+        }
+
+        .hero-image {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-avatar {
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 0 60px rgba(0, 212, 255, 0.4), var(--shadow);
+            border: 5px solid rgba(0, 212, 255, 0.3);
+            transition: all 0.5s ease;
+            animation: float 6s ease-in-out infinite;
+            position: relative;
+        }
+
+        .hero-avatar::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(124, 58, 237, 0.3));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        .hero-avatar:hover::before {
+            opacity: 1;
+        }
+
+        .hero-avatar:hover {
+            transform: scale(1.08) rotate(8deg);
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 80px rgba(124, 58, 237, 0.5), 0 0 120px rgba(0, 212, 255, 0.3), var(--shadow-hover);
+        }
+
+        /* Sections */
+        .section {
+            padding: 8rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 2px;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            animation: expandWidth 0.8s ease 0.2s backwards;
+        }
+
+        @keyframes expandWidth {
+            from { width: 0; opacity: 0; }
+            to { width: 80px; opacity: 1; }
+        }
+
+        /* Personal Info */
+        .personal-info {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(124, 58, 237, 0.05));
+            border-radius: 30px;
+            padding: 4rem;
+            margin: 4rem auto;
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.1), inset 0 0 50px rgba(124, 58, 237, 0.05);
+            transition: all 0.4s ease;
+        }
+
+        .personal-info:hover {
+            border-color: rgba(0, 212, 255, 0.4);
+            box-shadow: 0 0 60px rgba(0, 212, 255, 0.2), inset 0 0 60px rgba(124, 58, 237, 0.1);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .info-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(124, 58, 237, 0.3));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        .info-card:hover::before {
+            opacity: 1;
+        }
+
+        .info-card:hover::after {
+            opacity: 0.5;
+        }
+
+        .info-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.25), 0 0 80px rgba(124, 58, 237, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .info-card i {
+            font-size: 2.5rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+        }
+
+        .info-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-purple);
+        }
+
+        /* Certificates */
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .certificate-card {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .certificate-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1));
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 1;
+        }
+
+        .certificate-card:hover::before {
+            opacity: 1;
+        }
+
+        .certificate-card:hover {
+            transform: scale(1.08) rotateY(5deg);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.4), 0 0 80px rgba(124, 58, 237, 0.2);
+            border-color: rgba(0, 212, 255, 0.5);
+        }
+
+        .certificate-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 2;
+        }
+
+        .certificate-card:hover .certificate-image {
+            transform: scale(1.15) rotate(2deg);
+        }
+
+        .certificate-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 2rem 1.5rem 1.5rem;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .certificate-card:hover .certificate-overlay {
+            transform: translateY(0);
+        }
+
+        .certificate-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .skill-card:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.3), 0 0 80px rgba(124, 58, 237, 0.15);
+            border-color: rgba(0, 212, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .skill-icon {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-progress {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 10px;
+            transition: width 2s ease;
+            width: 0;
+        }
+
+        .skill-card.animate .progress-fill {
+            width: var(--progress);
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 25px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .project-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1));
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .project-card:hover::after {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-25px);
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.3), 0 0 100px rgba(124, 58, 237, 0.15);
+            border-color: rgba(0, 212, 255, 0.4);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.1) rotate(1deg);
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tag {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent-cyan);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Contact */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .contact-item:hover::before {
+            transform: translateX(100%);
+        }
+
+        .contact-item:hover {
+            transform: translateX(15px);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.25), 0 0 60px rgba(124, 58, 237, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .contact-form {
+            background: rgba(0, 212, 255, 0.05);
+            padding: 2.5rem;
+            border-radius: 25px;
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .contact-form:hover {
+            border-color: rgba(0, 212, 255, 0.4);
+            box-shadow: 0 0 60px rgba(0, 212, 255, 0.2);
+            background: rgba(0, 212, 255, 0.08);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            background: rgba(0, 212, 255, 0.05);
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2), inset 0 0 10px rgba(0, 212, 255, 0.1);
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .hero-avatar {
+                width: 250px;
+                height: 250px;
+            }
+
+            .cta-buttons {
+                justify-content: center;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .personal-info {
+                padding: 2rem;
+                margin: 2rem auto;
+            }
+
+            .section {
+                padding: 4rem 5%;
+            }
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hide scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--accent-cyan), var(--accent-purple));
+            border-radius: 4px;
+        }
+
+        /* Certificate Modal */
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: none;
+        }
+
+        .certificate-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: var(--text-primary);
+            font-size: 2rem;
+            cursor: none;
+            transition: all 0.3s ease;
+            z-index: 10001;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .modal-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: var(--shadow-hover);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .modal-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .modal-details h2 {
+            font-size: 2rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: float-up 0.6s ease;
+        }
+
+        .modal-details p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1rem;
+            animation: float-up 0.8s ease;
+        }
+
+        .modal-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 2rem;
+            background: rgba(0, 212, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            animation: float-up 1s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-info:hover {
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .info-item strong {
+            color: var(--accent-purple);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-item span {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Responsive Modal */
+        @media (max-width: 768px) {
+            .modal-body {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+
+            .modal-close {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
+
+            .modal-details h2 {
+                font-size: 1.5rem;
+            }
+
+            .modal-content {
+                border-radius: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursorFollower"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-container" id="nav">
+        <div class="nav-content">
+            <div class="logo">Carl Ariel Igong-igong</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#personal">Personal Info</a></li>
+                <li><a href="#certificates">Certificates</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text reveal">
+                <div class="title">Information Technology Student</div>
+                <h1>Hi, I'm <span style="background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Carl Ariel Igong-igong</span></h1>
+                <p>Motivated IT student with hands-on experience in software development, IT support, and UI/UX design. Passionate about turning complex challenges into elegant solutions and creating innovative digital experiences.</p>
+                <div class="cta-buttons">
+                    <a href="#projects" class="btn btn-primary">
+                        <i class="fas fa-eye"></i>
+                        View Projects
+                    </a>
+                    <a href="Carl Ariel Igong-igong RESUME.docx" class="btn btn-secondary" download>
+                        <i class="fas fa-download"></i>
+                        Download Resume
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="images/profile/Picture1.png" alt="Carl Ariel Igong-igong" class="hero-avatar">
+            </div>
+        </div>
+    </section>
+
+    <!-- Personal Info -->
+    <section id="personal" class="section reveal">
+        <h2 class="section-title">About Me</h2>
+        <div class="personal-info">
+            <div class="info-grid">
+                <div class="info-card">
+                    <i class="fas fa-user"></i>
+                    <h3>About Me</h3>
+                    <p>Creative IT professional with hands-on experience in software development, IT support, and UI/UX design. I thrive on turning complex challenges into simple, elegant solutions that make a real impact.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Education</h3>
+                    <p>Bachelor of Science in Information Technology<br>
+                    Aklan State University – Kalibo Campus<br>
+                    Expected Graduation: 2026</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-bullseye"></i>
+                    <h3>Career Goal</h3>
+                    <p>To apply technical and problem-solving skills to develop innovative software solutions that improve systems, support communities, and create better working environments.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-heart"></i>
+                    <h3>My Passion</h3>
+                    <p>I'm passionate about using technology to create innovative solutions. Every project is an opportunity to build something meaningful that enhances user experiences and solves real-world problems.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificates -->
+    <section id="certificates" class="section">
+        <h2 class="section-title">Certificates & Awards</h2>
+        <div class="certificates-grid">
+            <div class="certificate-card reveal" data-title="FLIP 2025 - Certificate of Appearance" data-description="Certificate of appearance for attending the 2025 National Innovation Day with the theme 'FLIP: Forging Leaders of Innovation in the Philippines.' Participated in design thinking activities and innovation workshops on 28-29 April 2025." data-event="FLIP 2025 National Innovation Day" data-date="28-29 April 2025" data-location="Novotel Manila Araneta City, Quezon City">
+                <img src="images/cert/4436bd13-6a54-4a2d-8f07-32309c64ff2a.jpg" alt="FLIP 2025 Certificate of Appearance" class="certificate-image">
+                <div class="certificate-overlay">
+                    <div class="certificate-title">FLIP 2025 Appearance</div>
+                    <p>National Innovation Day Certificate</p>
+                </div>
+            </div>
+            <div class="certificate-card reveal" data-title="FLIP 2025 - Certificate of Participation" data-description="Certificate of participation in the HABI: Huddle, Analyze, Build, Innovate Workshop, a design thinking activity during the 2025 National Innovation Day. Theme: FLIP - Forging Leaders of Innovation in the Philippines." data-event="FLIP 2025 National Innovation Day" data-date="28 April 2025" data-location="Novotel Manila Araneta City, Quezon City">
+                <img src="images/cert/e6037aae-bfb3-4dbc-a9d4-f889ed6e59a5.jpg" alt="FLIP 2025 Certificate" class="certificate-image">
+                <div class="certificate-overlay">
+                    <div class="certificate-title">FLIP 2025 Participation</div>
+                    <p>National Innovation Day Certificate</p>
+                </div>
+            </div>
+            <div class="certificate-card reveal" data-title="Central Launch 2.0 - Certificate of Participation" data-description="Certificate of participation for actively participating in Central Launch 2.0: Western Visayas Startup Hackathon. Recognition of commitment to innovation, collaboration, and technological advancement in shaping the future of startups in Western Visayas." data-event="Central Launch 2.0 - Western Visayas Startup Hackathon" data-date="November 27-28, 2025" data-location="Central Philippine University, Iloilo City">
+                <img src="images/cert/eae26f65-202a-4933-a87e-f639a16a3412.jpg" alt="Central Launch 2.0 Certificate" class="certificate-image">
+                <div class="certificate-overlay">
+                    <div class="certificate-title">Central Launch 2.0</div>
+                    <p>Western Visayas Startup Hackathon</p>
+                </div>
+            </div>
+
+
+            <div class="certificate-card reveal" data-title="Certificate of Achievement - Incubation Award" data-description="Awarded to SkillHive in recognition of its innovative idea and potential for growth, earning the opportunity to receive incubation support and mentorship during the Technest Startup Pitching Contest." data-event="Technest Startup Pitching Contest" data-date="December 22, 2025" data-location="ASU - Kalibo Function Hall, Kalibo, Aklan">
+    <img src="images/cert/336f7678-06b4-49ac-ac01-04b80b9623a9.jpg" alt="Certificate of Achievement" class="certificate-image">
+    
+    <div class="certificate-overlay">
+        <div class="certificate-title">Incubation Award</div>
+        <p>Technest Startup Pitching Contest</p>
+    </div>
+</div>
+            <div class="certificate-card reveal" data-title="Certificate of Appreciation" data-description="Recognition for outstanding contributions to the SkillHive Platform development and Technest community initiatives. Awarded for dedicated service and innovation." data-event="SkillHive Platform & Technest" data-date="2025" data-location="Aklan State University">
+                <img src="images/cert/fb2d5dfd-7111-4877-b2e8-48871762727e.jpg" alt="Certificate 6" class="certificate-image">
+                <div class="certificate-overlay">
+                    <div class="certificate-title">Certificate of Appreciation</div>
+                    <p>SkillHive Platform & Technest</p>
+                </div>
+            </div>
+                        <div class="certificate-card reveal" data-title="Certificate of Recognition" data-description="Awarded in recognition of commendable efforts in representing Aklan State University in various academic and extracurricular competitions. Through dedication, talent, and commitment to excellence, honor and pride were brought to the institution with commendable performance." data-event="CCS Gala 2026" data-date="May 6, 2026" data-location="Terranova Garden, New Buswang, Kalibo, Aklan">
+    <img src="images/cert/87a63ac9-bc96-4c4c-a868-6bdbc4657f83.jpg" alt="Certificate of Recognition" class="certificate-image">
+    
+    <div class="certificate-overlay">
+        <div class="certificate-title">Certificate of Recognition</div>
+        <p>CCS Gala 2026</p>
+    </div>
+</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="section">
+        <h2 class="section-title">Skills</h2>
+        <div class="skills-grid">
+            <div class="skill-card reveal" style="--progress: 88%;">
+                <div class="skill-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>Web Development</h3>
+                <div class="skill-progress">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+            <div class="skill-card reveal" style="--progress: 90%;">
+                <div class="skill-icon">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <h3>UI/UX Design</h3>
+                <div class="skill-progress">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+            <div class="skill-card reveal" style="--progress: 87%;">
+                <div class="skill-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h3>Flutter Development</h3>
+                <div class="skill-progress">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+            <div class="skill-card reveal" style="--progress: 85%;">
+                <div class="skill-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3>Git & Version Control</h3>
+                <div class="skill-progress">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+            <div class="skill-card reveal" style="--progress: 89%;">
+                <div class="skill-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>IT Support</h3>
+                <div class="skill-progress">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+            <div class="skill-card reveal" style="--progress: 92%;">
+                <div class="skill-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3>Problem Solving</h3>
+                <div class="skill-progress">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="section">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card reveal">
+                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="SkillHive Platform" class="project-image">
+                <div class="project-content">
+                    <h3 class="project-title">SkillHive Platform</h3>
+                    <p>An innovative mobile platform designed to connect learners with interactive skill-building experiences. Features a clean, intuitive interface for users to explore and master new skills.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Flutter</span>
+                        <span class="tech-tag">Dart</span>
+                        <span class="tech-tag">Figma</span>
+                        <span class="tech-tag">Git</span>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#" class="btn btn-primary" style="padding: 0.7rem 1.5rem; font-size: 0.9rem;">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="#" class="btn btn-secondary" style="padding: 0.7rem 1.5rem; font-size: 0.9rem;">
+                            <i class="fab fa-github"></i> Source Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card reveal">
+                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Restaurant Order System" class="project-image">
+                <div class="project-content">
+                    <h3 class="project-title">Restaurant Order Management System</h3>
+                    <p>LAN-based order management system with integrated cashier functionality. Streamlines restaurant operations through real-time order tracking and efficient payment processing.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">LAN-Based</span>
+                        <span class="tech-tag">Database</span>
+                        <span class="tech-tag">UI/UX Design</span>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#" class="btn btn-primary" style="padding: 0.7rem 1.5rem; font-size: 0.9rem;">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="#" class="btn btn-secondary" style="padding: 0.7rem 1.5rem; font-size: 0.9rem;">
+                            <i class="fab fa-github"></i> Source Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card reveal">
+                <img src="https://images.unsplash.com/photo-1516035069371-29a083244fa8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Basketball Scoreboard" class="project-image">
+                <div class="project-content">
+                    <h3 class="project-title">Basketball Scoreboard System</h3>
+                    <p>LAN-based scoreboard system for basketball games. Features real-time score updates, game logs, and statistical tracking for efficient game management and audience engagement.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">LAN-Based</span>
+                        <span class="tech-tag">Real-time Display</span>
+                        <span class="tech-tag">Data Logging</span>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#" class="btn btn-primary" style="padding: 0.7rem 1.5rem; font-size: 0.9rem;">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="#" class="btn btn-secondary" style="padding: 0.7rem 1.5rem; font-size: 0.9rem;">
+                            <i class="fab fa-github"></i> Source Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card reveal">
+                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Logic Quest" class="project-image">
+                <div class="project-content">
+                    <h3 class="project-title">Logic Quest - Gamified Coding System</h3>
+                    <p>An interactive gamified learning platform that makes coding education engaging and fun. Features integrated levels, scoring system, and progression tracking to motivate learners.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Gamification</span>
+                        <span class="tech-tag">Interactive Logic</span>
+                        <span class="tech-tag">Progression System</span>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#" class="btn btn-primary" style="padding: 0.7rem 1.5rem; font-size: 0.9rem;">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="#" class="btn btn-secondary" style="padding: 0.7rem 1.5rem; font-size: 0.9rem;">
+                            <i class="fab fa-github"></i> Source Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card reveal">
+                <img src="https://images.unsplash.com/photo-1664207687597-3a0a5e35abe2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Terminal Pass System" class="project-image">
+                <div class="project-content">
+                    <h3 class="project-title">Terminal Pass System</h3>
+                    <p>Excel VBA-based pass management system with 4-click generation. Simplifies the process of creating and managing terminal passes with integrated input validation and error handling.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Excel VBA</span>
+                        <span class="tech-tag">Automation</span>
+                        <span class="tech-tag">Data Validation</span>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#" class="btn btn-primary" style="padding: 0.7rem 1.5rem; font-size: 0.9rem;">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="#" class="btn btn-secondary" style="padding: 0.7rem 1.5rem; font-size: 0.9rem;">
+                            <i class="fab fa-github"></i> Source Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-content">
+            <div class="contact-info">
+                <div class="contact-item reveal">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h4>Email</h4>
+                        <p>carligongigong@email.com</p>
+                    </div>
+                </div>
+                <div class="contact-item reveal">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                        <h4>Location</h4>
+                        <p>Malinao, Aklan, Philippines</p>
+                    </div>
+                </div>
+                <div class="contact-item reveal">
+                    <div class="contact-icon">
+                        <i class="fab fa-facebook"></i>
+                    </div>
+                    <div>
+                        <h4>Facebook</h4>
+                        <p>https://www.facebook.com/lrac.gnogi</p>
+                    </div>
+                </div>
+                <div class="contact-item reveal">
+                    <div class="contact-icon">
+                        <i class="fab fa-linkedin"></i>
+                    </div>
+                    <div>
+                        <h4>LinkedIn</h4>
+                        <p>https://www.linkedin.com/in/carl-ariel-igong-igong-a896413a6</p>
+                    </div>
+                </div>
+                <div class="contact-item reveal">
+                    <div class="contact-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <div>
+                        <h4>GitHub</h4>
+                        <p>https://github.com/carlkitt</p>
+                    </div>
+                </div>
+            </div>
+            <form class="contact-form reveal">
+                <div class="form-group">
+                    <input type="text" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Subject">
+                </div>
+                <div class="form-group">
+                    <textarea rows="5" placeholder="Your Message..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Certificate Modal -->
+    <div class="certificate-modal" id="certificateModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Certificate" class="modal-image">
+                <div class="modal-details">
+                    <h2 id="modalTitle"></h2>
+                    <p id="modalDescription"></p>
+                    <div class="modal-info">
+                        <div class="info-item">
+                            <strong>Event:</strong>
+                            <span id="modalEvent"></span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Date:</strong>
+                            <span id="modalDate"></span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Location:</strong>
+                            <span id="modalLocation"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 800);
+        });
+
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        const cursorFollower = document.getElementById('cursorFollower');
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
+            
+            cursorFollower.style.left = mouseX + 'px';
+            cursorFollower.style.top = mouseY + 'px';
+        });
+
+        // Hover effects for cursor
+        document.querySelectorAll('a, button, .certificate-card, .skill-card, .project-card, .contact-item, .info-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(1.8)';
+                cursor.style.borderColor = 'var(--accent-purple)';
+                cursor.style.boxShadow = '0 0 20px rgba(124, 58, 237, 0.6), inset 0 0 10px rgba(124, 58, 237, 0.3)';
+                
+                cursorFollower.style.transform = 'scale(2.5)';
+                cursorFollower.style.background = 'rgba(124, 58, 237, 0.15)';
+                cursorFollower.style.boxShadow = '0 0 30px rgba(124, 58, 237, 0.4), inset 0 0 20px rgba(124, 58, 237, 0.2)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursor.style.borderColor = 'var(--accent-cyan)';
+                cursor.style.boxShadow = '0 0 10px rgba(0, 212, 255, 0.3), inset 0 0 10px rgba(0, 212, 255, 0.1)';
+                
+                cursorFollower.style.transform = 'scale(1)';
+                cursorFollower.style.background = 'rgba(0, 212, 255, 0.1)';
+                cursorFollower.style.boxShadow = '0 0 20px rgba(0, 212, 255, 0.2)';
+            });
+        });
+
+        // Smooth Scrolling Navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar Background on Scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(10, 10, 10, 0.98)';
+                nav.style.backdropFilter = 'blur(30px)';
+            } else {
+                nav.style.background = 'rgba(10, 10, 10, 0.95)';
+                nav.style.backdropFilter = 'blur(20px)';
+            }
+        });
+
+        // Scroll Reveal Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    
+                    // Animate skill progress bars
+                    if (entry.target.classList.contains('skill-card')) {
+                        setTimeout(() => {
+                            entry.target.classList.add('animate');
+                        }, 200);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Back to Top Button
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Contact Form Submission
+        document.querySelector('.contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your message! I\'ll get back to you soon.');
+            e.target.reset();
+        });
+
+        // Parallax effect for hero background
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Initialize skill animations after load
+        setTimeout(() => {
+            document.querySelectorAll('.skill-card').forEach(card => {
+                card.classList.add('animate');
+            });
+        }, 1000);
+
+        // Certificate Modal Functionality
+        const certificateModal = document.getElementById('certificateModal');
+        const modalClose = document.getElementById('modalClose');
+        const certificateCards = document.querySelectorAll('.certificate-card');
+
+        certificateCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const title = card.getAttribute('data-title');
+                const description = card.getAttribute('data-description');
+                const event = card.getAttribute('data-event');
+                const date = card.getAttribute('data-date');
+                const location = card.getAttribute('data-location');
+                const image = card.querySelector('.certificate-image').src;
+
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalDescription').textContent = description;
+                document.getElementById('modalEvent').textContent = event;
+                document.getElementById('modalDate').textContent = date;
+                document.getElementById('modalLocation').textContent = location;
+                document.getElementById('modalImage').src = image;
+
+                certificateModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        modalClose.addEventListener('click', () => {
+            certificateModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        certificateModal.addEventListener('click', (e) => {
+            if (e.target === certificateModal) {
+                certificateModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && certificateModal.classList.contains('active')) {
+                certificateModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
