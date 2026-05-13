@@ -722,6 +722,10 @@
             font-weight: 500;
         }
 
+        .project-content > div:last-child {
+            display: none !important;
+        }
+
         /* Contact */
         .contact-content {
             display: grid;
@@ -975,9 +979,15 @@
         .modal-body {
             padding: 2rem;
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 3rem;
+            grid-template-columns: 1fr;
+            gap: 2rem;
             align-items: start;
+        }
+
+        .modal-left {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
         }
 
         .modal-image {
@@ -987,6 +997,7 @@
             border-radius: 20px;
             box-shadow: var(--shadow-hover);
             border: 2px solid rgba(0, 212, 255, 0.3);
+            margin: 0 auto;
         }
 
         .modal-details {
@@ -1049,11 +1060,76 @@
             font-size: 1rem;
         }
 
+        /* Event Gallery */
+        .event-gallery {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .gallery-title {
+            font-size: 1.2rem;
+            color: var(--accent-purple);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            border-color: rgba(0, 212, 255, 0.6);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item::after {
+            content: '🔍';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
         /* Responsive Modal */
         @media (max-width: 768px) {
             .modal-body {
                 grid-template-columns: 1fr;
                 padding: 1.5rem;
+                gap: 1.5rem;
             }
 
             .modal-close {
@@ -1068,6 +1144,10 @@
 
             .modal-content {
                 border-radius: 20px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -1170,7 +1250,7 @@
                     <p>National Innovation Day Certificate</p>
                 </div>
             </div>
-            <div class="certificate-card reveal" data-title="Central Launch 2.0 - Certificate of Participation" data-description="Certificate of participation for actively participating in Central Launch 2.0: Western Visayas Startup Hackathon. Recognition of commitment to innovation, collaboration, and technological advancement in shaping the future of startups in Western Visayas." data-event="Central Launch 2.0 - Western Visayas Startup Hackathon" data-date="November 27-28, 2025" data-location="Central Philippine University, Iloilo City">
+            <div class="certificate-card reveal" data-title="Central Launch 2.0 - Certificate of Participation" data-description="Certificate of participation for actively participating in Central Launch 2.0: Western Visayas Startup Hackathon. Recognition of commitment to innovation, collaboration, and technological advancement in shaping the future of startups in Western Visayas." data-event="Central Launch 2.0 - Western Visayas Startup Hackathon" data-date="November 27-28, 2025" data-location="Central Philippine University, Iloilo City" data-gallery='["images/events/central-launch-1.jpg", "images/events/central-launch-2.jpg", "images/events/central-launch-3.jpg"]'>
                 <img src="images/cert/eae26f65-202a-4933-a87e-f639a16a3412.jpg" alt="Central Launch 2.0 Certificate" class="certificate-image">
                 <div class="certificate-overlay">
                     <div class="certificate-title">Central Launch 2.0</div>
@@ -1457,7 +1537,13 @@
         <div class="modal-content">
             <button class="modal-close" id="modalClose">&times;</button>
             <div class="modal-body">
-                <img id="modalImage" src="" alt="Certificate" class="modal-image">
+                <div class="modal-left">
+                    <img id="modalImage" src="" alt="Certificate" class="modal-image">
+                    <div class="event-gallery" id="eventGallery" style="display: none;">
+                        <div class="gallery-title">Event Photos</div>
+                        <div class="gallery-grid" id="galleryGrid"></div>
+                    </div>
+                </div>
                 <div class="modal-details">
                     <h2 id="modalTitle"></h2>
                     <p id="modalDescription"></p>
@@ -1632,6 +1718,7 @@
                 const date = card.getAttribute('data-date');
                 const location = card.getAttribute('data-location');
                 const image = card.querySelector('.certificate-image').src;
+                const galleryData = card.getAttribute('data-gallery');
 
                 document.getElementById('modalTitle').textContent = title;
                 document.getElementById('modalDescription').textContent = description;
@@ -1639,6 +1726,38 @@
                 document.getElementById('modalDate').textContent = date;
                 document.getElementById('modalLocation').textContent = location;
                 document.getElementById('modalImage').src = image;
+
+                // Handle gallery images
+                const eventGallery = document.getElementById('eventGallery');
+                const galleryGrid = document.getElementById('galleryGrid');
+                galleryGrid.innerHTML = '';
+
+                if (galleryData) {
+                    try {
+                        const images = JSON.parse(galleryData);
+                        if (Array.isArray(images) && images.length > 0) {
+                            images.forEach(imgSrc => {
+                                const galleryItem = document.createElement('div');
+                                galleryItem.className = 'gallery-item';
+                                galleryItem.innerHTML = `<img src="${imgSrc}" alt="Event photo">`;
+                                
+                                galleryItem.addEventListener('click', (e) => {
+                                    e.stopPropagation();
+                                    window.open(imgSrc, '_blank');
+                                });
+                                
+                                galleryGrid.appendChild(galleryItem);
+                            });
+                            eventGallery.style.display = 'block';
+                        } else {
+                            eventGallery.style.display = 'none';
+                        }
+                    } catch (e) {
+                        eventGallery.style.display = 'none';
+                    }
+                } else {
+                    eventGallery.style.display = 'none';
+                }
 
                 certificateModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
