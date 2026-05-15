@@ -520,7 +520,7 @@
             backdrop-filter: blur(10px);
             border: 2px solid rgba(0, 212, 255, 0.2);
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
+            cursor: none !important;
             position: relative;
         }
 
@@ -729,7 +729,7 @@
         /* Contact */
         .contact-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 4rem;
             max-width: 1000px;
             margin: 0 auto;
@@ -1506,24 +1506,6 @@
                     </div>
                 </div>
             </div>
-            <form class="contact-form reveal">
-                <div class="form-group">
-                    <input type="text" placeholder="Your Name" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" placeholder="Your Email" required>
-                </div>
-                <div class="form-group">
-                    <input type="text" placeholder="Subject">
-                </div>
-                <div class="form-group">
-                    <textarea rows="5" placeholder="Your Message..." required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                    <i class="fas fa-paper-plane"></i>
-                    Send Message
-                </button>
-            </form>
         </div>
     </section>
 
@@ -1680,13 +1662,6 @@
                 top: 0,
                 behavior: 'smooth'
             });
-        });
-
-        // Contact Form Submission
-        document.querySelector('.contact-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Thank you for your message! I\'ll get back to you soon.');
-            e.target.reset();
         });
 
         // Parallax effect for hero background
