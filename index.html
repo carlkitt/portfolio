@@ -373,40 +373,68 @@
         .skills-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
         .skills-list { border: 1px solid var(--border); }
         .skill-row {
-            display: flex; align-items: center;
-            padding: 28px 36px; border-bottom: 1px solid var(--border);
-            transition: background 0.3s ease;
-            position: relative;
+            display: flex; align-items: center; gap: 20px;
+            padding: 26px 36px; border-bottom: 1px solid var(--border);
+            transition: background 0.35s ease, padding-left 0.35s ease;
+            position: relative; overflow: hidden;
         }
+        .skill-row::before {
+            content: '';
+            position: absolute; left: 0; top: 0; bottom: 0; width: 0;
+            background: linear-gradient(90deg, rgba(196,156,87,0.18), transparent);
+            transition: width 0.4s ease;
+            pointer-events: none;
+        }
+        .skill-row:hover::before { width: 100%; }
         .skill-row:last-child { border-bottom: none; }
-        .skill-row:hover { background: var(--gold-pale); }
+        .skill-row:hover { padding-left: 44px; }
         .skill-num {
-            font-family: 'DM Mono', monospace; font-size: 11px;
-            color: var(--text-dim); width: 32px; flex-shrink: 0;
+            font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px;
+            color: var(--text-dim); width: 26px; flex-shrink: 0;
         }
         .skill-icon-wrap {
-            width: 40px; height: 40px; background: var(--bg3);
+            width: 42px; height: 42px; background: var(--bg3);
             border: 1px solid var(--border); border-radius: 2px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 16px; color: var(--gold); margin-right: 20px; flex-shrink: 0;
+            font-size: 15px; color: var(--gold); flex-shrink: 0;
+            transition: border-color 0.3s ease, background 0.3s ease;
         }
-        .skill-info { flex: 1; }
+        .skill-row:hover .skill-icon-wrap {
+            border-color: var(--border-gold); background: var(--gold-pale);
+        }
+        .skill-info { flex: 1; min-width: 0; }
         .skill-name {
-            font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 8px;
+            font-size: 14px; font-weight: 500; color: var(--text);
+            margin-bottom: 10px; letter-spacing: 0.2px;
         }
         .skill-bar {
-            height: 2px; background: var(--border); border-radius: 1px;
-            overflow: hidden;
+            height: 1px; background: rgba(255,255,255,0.08);
+            position: relative; overflow: visible;
         }
         .skill-fill {
-            height: 100%;
+            position: absolute; top: 0; left: 0;
+            height: 1px;
             background: linear-gradient(90deg, var(--gold), var(--gold-light));
-            width: 0; transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            border-radius: 1px;
+            width: 0; transition: width 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        .skill-pct {
-            font-family: 'DM Mono', monospace; font-size: 12px;
-            color: var(--gold); margin-left: 20px; flex-shrink: 0;
+        /* Dot at the end of the bar */
+        .skill-fill::after {
+            content: '';
+            position: absolute; right: -3px; top: 50%;
+            transform: translateY(-50%);
+            width: 5px; height: 5px; border-radius: 50%;
+            background: var(--gold-light);
+            box-shadow: 0 0 8px rgba(232,200,122,0.7);
+            opacity: 0; transition: opacity 0.3s ease 1.2s;
+        }
+        .skill-fill.lit::after { opacity: 1; }
+        .skill-level {
+            font-family: 'DM Mono', monospace; font-size: 9px;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: var(--gold); flex-shrink: 0;
+            padding: 5px 12px; border: 1px solid var(--border-gold);
+            background: var(--gold-pale); border-radius: 1px;
+            white-space: nowrap;
         }
 
         .skills-visual {
@@ -918,7 +946,7 @@
 
         <div class="project-row reveal">
             <div class="project-thumb">
-                <img src="images\projects\1.jpg" alt="SkillHive">
+                <img src="images/projects/1.jpg" alt="SkillHive">
             </div>
             <div class="project-body">
                 <div class="project-number">01 / 05</div>
@@ -936,11 +964,11 @@
 
         <div class="project-row reveal">
             <div class="project-thumb">
-                <img src="images\projects\2.jpg" alt="Restaurant">
+                <img src="images/projects/2.jpg" alt="Restaurant">
             </div>
             <div class="project-body">
                 <div class="project-number">02 / 05</div>
-                <div class="project-name">images\projects\2.jpg</div>
+                <div class="project-name">Restaurant Order Management System</div>
                 <p class="project-desc">LAN-based order management system with integrated cashier functionality. Streamlines restaurant operations through real-time order tracking and efficient payment processing.</p>
                 <div class="project-tags">
                     <span class="project-tag">LAN-Based</span>
@@ -953,7 +981,7 @@
 
         <div class="project-row reveal">
             <div class="project-thumb">
-                <img src="images\projects\3.jpg" alt="Basketball">
+                <img src="images/projects/3.jpg" alt="Basketball">
             </div>
             <div class="project-body">
                 <div class="project-number">03 / 05</div>
@@ -970,24 +998,7 @@
 
         <div class="project-row reveal">
             <div class="project-thumb">
-                <img src="" alt="Restaurant">
-            </div>
-            <div class="project-body">
-                <div class="project-number">02 / 05</div>
-                <div class="project-name">images\projects\2.jpg</div>
-                <p class="project-desc">LAN-based order management system with integrated cashier functionality. Streamlines restaurant operations through real-time order tracking and efficient payment processing.</p>
-                <div class="project-tags">
-                    <span class="project-tag">LAN-Based</span>
-                    <span class="project-tag">Database</span>
-                    <span class="project-tag">UI/UX Design</span>
-                </div>
-                <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </div>
-
-        <div class="project-row reveal">
-            <div class="project-thumb">
-                <img src="images\projects\4.jpg" alt="Logic Quest">
+                <img src="images/projects/4.jpg" alt="Logic Quest">
             </div>
             <div class="project-body">
                 <div class="project-number">04 / 05</div>
